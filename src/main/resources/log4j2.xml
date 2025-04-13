@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Appenders>
+        <!-- Console Appender -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n"/>
+        </Console>
+
+        <!-- Rolling File Appender -->
+        <RollingFile name="RollingFile" fileName="logs/atm-simulator.log"
+                     filePattern="logs/atm-simulator-%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/> <!-- Rollover daily -->
+                <SizeBasedTriggeringPolicy size="10 MB"/> <!-- Rollover when file size exceeds 10MB -->
+            </Policies>
+            <DefaultRolloverStrategy max="30"/> <!-- Keep logs for 30 days -->
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <!-- Root Logger -->
+        <Root level="info">
+            <!-- <AppenderRef ref="Console"/> -->
+            <AppenderRef ref="RollingFile"/>
+        </Root>
+
+        <!-- Custom Logger for specific packages -->
+        <Logger name="com.atm.simulator" level="debug" additivity="false">
+            <AppenderRef ref="RollingFile"/>
+        </Logger>
+    </Loggers>
+</Configuration>

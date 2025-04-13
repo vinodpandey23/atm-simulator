@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="user-session-ddl" author="vinod">
+        <createTable tableName="user_data">
+            <column name="id" type="BIGSERIAL" remarks="Unique system generated identifier">
+                <constraints primaryKeyName="user_data_pk" primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(64)" remarks="User name">
+                <constraints nullable="false" uniqueConstraintName="user_name_uk" unique="true"/>
+            </column>
+            <column name="created_date_time" type="timestamp" remarks="Timestamp of record creation">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="active_user">
+            <column name="id" type="BIGSERIAL" remarks="Unique system generated identifier">
+                <constraints primaryKeyName="active_user_pk" primaryKey="true"/>
+            </column>
+            <column name="user_id" type="BIGSERIAL" remarks="Unique system generated user identifier">
+                <constraints nullable="false" foreignKeyName="active_user_fk" references="user_data(id)"/>
+            </column>
+            <column name="created_date_time" type="timestamp" remarks="Timestamp of record creation">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

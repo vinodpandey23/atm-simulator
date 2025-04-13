@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="account-ledger-ddl" author="vinod">
+        <createTable tableName="account_balance">
+            <column name="id" type="BIGSERIAL" remarks="Unique system generated identifier">
+                <constraints primaryKeyName="account_balance_pk" primaryKey="true"/>
+            </column>
+            <column name="user_id" type="BIGSERIAL" remarks="Unique system generated user identifier">
+                <constraints nullable="false" foreignKeyName="account_balance_fk" references="user_data(id)"/>
+            </column>
+            <column name="balance" type="NUMBER(19,4)" remarks="User account balance">
+                <constraints nullable="false"/>
+            </column>
+            <column name="owed_amount" type="NUMBER(19,4)" remarks="Amount owed to others">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_date_time" type="timestamp" remarks="Timestamp of the last updated record">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="owed_balance">
+            <column name="id" type="BIGSERIAL" remarks="Unique system generated identifier">
+                <constraints primaryKeyName="pending_transfer_pk" primaryKey="true"/>
+            </column>
+            <column name="source_user_id" type="BIGSERIAL" remarks="Unique system generated source user identifier">
+                <constraints nullable="false" foreignKeyName="pending_transfer_fk1" references="user_data(id)"/>
+            </column>
+            <column name="target_user_id" type="BIGSERIAL" remarks="Unique system generated target user identifier">
+                <constraints nullable="false" foreignKeyName="pending_transfer_fk2" references="user_data(id)"/>
+            </column>
+            <column name="amount" type="NUMBER(19,4)" remarks="Amount that source owe to target">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_date_time" type="timestamp" remarks="Timestamp of the last updated record">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
